@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFlex - Your Learning Journey</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(to right, #4f46e5, #a855f7);
+        }
+        .btn-primary {
+            @apply px-6 py-3 font-semibold text-white rounded-lg shadow-md transition-all duration-300 ease-in-out;
+            background: linear-gradient(to right, #4f46e5, #a855f7);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.5);
+        }
+        .nav-link {
+            @apply text-gray-600 hover:text-indigo-600 transition-colors duration-200 cursor-pointer;
+        }
+        /* Animation for revealing sections on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold gradient-text" data-page="home">EduFlex</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a class="nav-link" data-page="home">Home</a>
+                <a class="nav-link" data-page="courses">Courses</a>
+                <a class="nav-link" data-page="dashboard">Dashboard</a>
+                <a class="nav-link">About</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a class="btn-primary" data-page="courses">Get Started</a>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a class="block py-2 nav-link" data-page="home">Home</a>
+            <a class="block py-2 nav-link" data-page="courses">Courses</a>
+            <a class="block py-2 nav-link" data-page="dashboard">Dashboard</a>
+            <a class="block py-2 nav-link">About</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <section id="home-page" class="page">
+            <!-- Hero Section -->
+            <div class="container mx-auto px-6 py-24 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                    Unlock Your Potential with <span class="gradient-text">EduFlex</span>
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                    Discover thousands of courses to master new skills, achieve your goals, and advance your career.
+                </p>
+                <div class="max-w-xl mx-auto relative">
+                    <input type="text" placeholder="Search for courses like 'Web Development'..." class="w-full py-4 pl-5 pr-32 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all">
+                    <button class="absolute right-2 top-1/2 -translate-y-1/2 btn-primary !py-3 !px-6">Search</button>
+                </div>
+            </div>
+
+            <!-- Featured Courses -->
+            <div class="py-16 bg-slate-100 reveal">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl font-bold text-center mb-10">Featured Courses</h2>
+                    <div class="relative">
+                        <div id="featured-courses-carousel" class="flex overflow-x-hidden space-x-6 pb-4">
+                            <!-- Course cards will be injected here by JS -->
+                        </div>
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"><i data-feather="chevron-left"></i></button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"><i data-feather="chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="py-20 reveal">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl font-bold text-center mb-12">What Our Students Say</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-lg">
+                            <p class="text-gray-600 mb-6">"EduFlex transformed my career. The hands-on projects in the Full-Stack course were invaluable. Highly recommended!"</p>
+                            <div class="flex items-center">
+                                <img src="https://placehold.co/48x48/E2E8F0/4A5568?text=AV" class="w-12 h-12 rounded-full mr-4" alt="User Avatar">
+                                <div>
+                                    <p class="font-semibold">Sarah Johnson</p>
+                                    <p class="text-sm text-gray-500">Web Developer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-lg">
+                            <p class="text-gray-600 mb-6">"The flexibility to learn at my own pace was a game-changer. The instructors are experts and very supportive."</p>
+                            <div class="flex items-center">
+                                <img src="https://placehold.co/48x48/E2E8F0/4A5568?text=AV" class="w-12 h-12 rounded-full mr-4" alt="User Avatar">
+                                <div>
+                                    <p class="font-semibold">Michael Chen</p>
+                                    <p class="text-sm text-gray-500">Data Scientist</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
+                            <p class="text-gray-600 mb-6">"I started with zero knowledge in UI/UX design, and now I'm confident in my skills. The community is amazing!"</p>
+                            <div class="flex items-center">
+                                <img src="https://placehold.co/48x48/E2E8F0/4A5568?text=AV" class="w-12 h-12 rounded-full mr-4" alt="User Avatar">
+                                <div>
+                                    <p class="font-semibold">Emily Rodriguez</p>
+                                    <p class="text-sm text-gray-500">UX/UI Designer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Listing Page -->
+        <section id="courses-page" class="page hidden">
+            <div class="container mx-auto px-6 py-12">
+                <h1 class="text-4xl font-bold mb-8">Explore Our Courses</h1>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <div>
+                        <label for="category-filter" class="block text-sm font-medium text-gray-700">Category</label>
+                        <select id="category-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="all">All</option>
+                            <option value="development">Development</option>
+                            <option value="design">Design</option>
+                            <option value="marketing">Marketing</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="difficulty-filter" class="block text-sm font-medium text-gray-700">Difficulty</label>
+                        <select id="difficulty-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="all">All</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Course Grid -->
+                <div id="course-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Course cards will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Detail Page -->
+        <section id="course-detail-page" class="page hidden">
+            <div class="container mx-auto px-6 py-12">
+                <div class="lg:flex lg:space-x-12">
+                    <!-- Main Content -->
+                    <div class="lg:w-2/3">
+                        <div class="aspect-video bg-black rounded-lg mb-6 shadow-2xl overflow-hidden">
+                           <img id="course-detail-video" src="https://placehold.co/1280x720/111827/FFFFFF?text=Course+Video" class="w-full h-full object-cover" alt="Course Video">
+                        </div>
+                        <h1 id="course-detail-title" class="text-4xl font-bold mb-2"></h1>
+                        <p id="course-detail-description" class="text-gray-600 mb-8"></p>
+                        
+                        <!-- Syllabus -->
+                        <h2 class="text-2xl font-bold mb-4">Course Syllabus</h2>
+                        <div id="course-syllabus" class="space-y-3">
+                            <!-- Syllabus items will be injected by JS -->
+                        </div>
+                    </div>
+                    <!-- Sidebar -->
+                    <div class="lg:w-1/3 mt-8 lg:mt-0">
+                        <div class="bg-white p-6 rounded-lg shadow-lg sticky top-28">
+                            <h3 class="text-xl font-bold mb-4">Course Progress</h3>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                                <div class="gradient-bg h-2.5 rounded-full" style="width: 45%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-6">45% Complete</p>
+                            <button class="w-full btn-primary text-lg">Enroll Now</button>
+                            <ul class="mt-6 space-y-3 text-gray-600">
+                                <li class="flex items-center"><i data-feather="clock" class="w-5 h-5 mr-3 text-indigo-500"></i> Approx. 12 hours to complete</li>
+                                <li class="flex items-center"><i data-feather="film" class="w-5 h-5 mr-3 text-indigo-500"></i> 82 video lessons</li>
+                                <li class="flex items-center"><i data-feather="award" class="w-5 h-5 mr-3 text-indigo-500"></i> Certificate of Completion</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Dashboard -->
+        <section id="dashboard-page" class="page hidden">
+            <div class="container mx-auto px-6 py-12">
+                <div class="md:flex md:space-x-8">
+                    <!-- Sidebar Navigation -->
+                    <aside class="md:w-1/4 mb-8 md:mb-0">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-bold mb-4">Dashboard</h3>
+                            <nav class="space-y-2">
+                                <a href="#" class="flex items-center px-4 py-2 text-white gradient-bg rounded-lg">
+                                    <i data-feather="book-open" class="w-5 h-5 mr-3"></i> My Courses
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                    <i data-feather="user" class="w-5 h-5 mr-3"></i> Profile
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                    <i data-feather="settings" class="w-5 h-5 mr-3"></i> Settings
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                    <i data-feather="log-out" class="w-5 h-5 mr-3"></i> Logout
+                                </a>
+                            </nav>
+                        </div>
+                    </aside>
+                    <!-- Main Content -->
+                    <div class="md:w-3/4">
+                        <h1 class="text-3xl font-bold mb-6">Welcome back, Alex!</h1>
+                        
+                        <!-- My Courses -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                            <h2 class="text-2xl font-bold mb-4">My Courses</h2>
+                            <div id="dashboard-courses" class="space-y-6">
+                                <!-- Dashboard course items injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Recommended Courses -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h2 class="text-2xl font-bold mb-4">Recommended for You</h2>
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <!-- Recommended course cards injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-10">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">EduFlex</h3>
+                    <p class="text-gray-400">Empowering minds through accessible and quality online education.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors" data-page="home">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-page="courses">Courses</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
+                &copy; 2024 EduFlex. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA ---
+        const coursesData = [
+            { id: 1, title: 'Modern Web Development Bootcamp', category: 'development', difficulty: 'beginner', rating: 4.8, progress: 75, image: 'https://placehold.co/600x400/4f46e5/ffffff?text=Web+Dev', description: 'Master HTML, CSS, JavaScript, React, Node.js and more in this comprehensive bootcamp.', syllabus: [{ title: 'Module 1: HTML & CSS Basics', lessons: 12 }, { title: 'Module 2: JavaScript Fundamentals', lessons: 20 }, { title: 'Module 3: Advanced React', lessons: 18 }] },
+            { id: 2, title: 'Complete UI/UX Design Masterclass', category: 'design', difficulty: 'intermediate', rating: 4.9, progress: 45, image: 'https://placehold.co/600x400/d946ef/ffffff?text=UI/UX', description: 'Learn Figma, user research, and prototyping to create stunning and user-friendly designs.', syllabus: [{ title: 'Module 1: Design Principles', lessons: 10 }, { title: 'Module 2: Figma Deep Dive', lessons: 25 }, { title: 'Module 3: Prototyping & Testing', lessons: 15 }] },
+            { id: 3, title: 'Digital Marketing for Beginners', category: 'marketing', difficulty: 'beginner', rating: 4.7, progress: 90, image: 'https://placehold.co/600x400/10b981/ffffff?text=Marketing', description: 'Understand SEO, SEM, social media marketing, and content strategy to grow any business.', syllabus: [{ title: 'Module 1: Intro to Digital Marketing', lessons: 8 }, { title: 'Module 2: SEO & SEM', lessons: 15 }, { title: 'Module 3: Social Media Strategy', lessons: 12 }] },
+            { id: 4, title: 'Advanced Python for Data Science', category: 'development', difficulty: 'advanced', rating: 4.9, progress: 20, image: 'https://placehold.co/600x400/f97316/ffffff?text=Python', description: 'Dive deep into Pandas, NumPy, and Scikit-learn for complex data analysis and machine learning.', syllabus: [{ title: 'Module 1: Advanced Python Concepts', lessons: 15 }, { title: 'Module 2: Data Manipulation', lessons: 22 }, { title: 'Module 3: Machine Learning Models', lessons: 20 }] },
+            { id: 5, title: 'Graphic Design Fundamentals', category: 'design', difficulty: 'beginner', rating: 4.6, progress: 0, image: 'https://placehold.co/600x400/3b82f6/ffffff?text=Design', description: 'Learn the core principles of graphic design, including typography, color theory, and layout.', syllabus: [{ title: 'Module 1: Introduction to Design', lessons: 5 }, { title: 'Module 2: Adobe Illustrator', lessons: 18 }, { title: 'Module 3: Creating a Portfolio', lessons: 10 }] },
+            { id: 6, title: 'JavaScript Algorithms & Data Structures', category: 'development', difficulty: 'intermediate', rating: 4.8, progress: 0, image: 'https://placehold.co/600x400/8b5cf6/ffffff?text=JS+Algos', description: 'Sharpen your problem-solving skills by mastering common algorithms and data structures.', syllabus: [{ title: 'Module 1: Big O Notation', lessons: 8 }, { title: 'Module 2: Common Data Structures', lessons: 15 }, { title: 'Module 3: Algorithm Patterns', lessons: 12 }] },
+        ];
+
+        // --- ELEMENTS ---
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('[data-page]');
+        const courseGrid = document.getElementById('course-grid');
+        const categoryFilter = document.getElementById('category-filter');
+        const difficultyFilter = document.getElementById('difficulty-filter');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // --- PAGE NAVIGATION ---
+        const showPage = (pageId) => {
+            pages.forEach(page => {
+                page.classList.toggle('hidden', page.id !== `${pageId}-page`);
+            });
+            window.scrollTo(0, 0);
+            mobileMenu.classList.add('hidden');
+        };
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        // --- COURSE CARD RENDERING ---
+        const createCourseCard = (course) => {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 cursor-pointer';
+            card.innerHTML = `
+                <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <span class="text-sm font-semibold ${course.category === 'development' ? 'text-indigo-600' : course.category === 'design' ? 'text-purple-600' : 'text-emerald-600'}">${course.category.charAt(0).toUpperCase() + course.category.slice(1)}</span>
+                    <h3 class="text-xl font-bold mt-2 mb-2 h-14">${course.title}</h3>
+                    <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                        <span>${course.difficulty.charAt(0).toUpperCase() + course.difficulty.slice(1)}</span>
+                        <span class="flex items-center">
+                            <i data-feather="star" class="w-4 h-4 text-yellow-400 fill-current mr-1"></i>
+                            ${course.rating}
+                        </span>
+                    </div>
+                </div>
+            `;
+            card.addEventListener('click', () => showCourseDetail(course.id));
+            return card;
+        };
+        
+        // --- COURSE LISTING & FILTERING ---
+        const populateCourses = () => {
+            if (!courseGrid) return;
+            courseGrid.innerHTML = '';
+            const category = categoryFilter.value;
+            const difficulty = difficultyFilter.value;
+
+            const filteredCourses = coursesData.filter(course => 
+                (category === 'all' || course.category === category) &&
+                (difficulty === 'all' || course.difficulty === difficulty)
+            );
+
+            filteredCourses.forEach(course => {
+                courseGrid.appendChild(createCourseCard(course));
+            });
+            feather.replace();
+        };
+
+        if (categoryFilter && difficultyFilter) {
+            categoryFilter.addEventListener('change', populateCourses);
+            difficultyFilter.addEventListener('change', populateCourses);
+        }
+
+        // --- COURSE DETAIL PAGE ---
+        const showCourseDetail = (courseId) => {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+
+            document.getElementById('course-detail-title').textContent = course.title;
+            document.getElementById('course-detail-description').textContent = course.description;
+            document.getElementById('course-detail-video').src = course.image.replace('600x400', '1280x720');
+
+            const syllabusContainer = document.getElementById('course-syllabus');
+            syllabusContainer.innerHTML = '';
+            course.syllabus.forEach(module => {
+                const moduleEl = document.createElement('div');
+                moduleEl.className = 'border border-gray-200 rounded-lg overflow-hidden';
+                moduleEl.innerHTML = `
+                    <button class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center transition">
+                        <span class="font-semibold">${module.title}</span>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="mr-4">${module.lessons} lessons</span>
+                            <i data-feather="chevron-down" class="transition-transform"></i>
+                        </div>
+                    </button>
+                    <div class="p-4 bg-white border-t border-gray-200 hidden">
+                        <ul class="space-y-2 text-gray-600">
+                            ${Array.from({length: 3}, (_, i) => `
+                                <li class="flex items-center">
+                                    <i data-feather="play-circle" class="w-5 h-5 mr-3 text-gray-400"></i>
+                                    Lesson ${i + 1}: Introduction to Topic
+                                </li>
+                            `).join('')}
+                             <li class="flex items-center text-gray-400">
+                                <i data-feather="more-horizontal" class="w-5 h-5 mr-3"></i>
+                                ...and ${module.lessons - 3} more
+                            </li>
+                        </ul>
+                    </div>
+                `;
+                syllabusContainer.appendChild(moduleEl);
+            });
+
+            // Accordion logic
+            syllabusContainer.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('i[data-feather="chevron-down"]');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            showPage('course-detail');
+            feather.replace();
+        };
+
+        // --- DASHBOARD ---
+        const populateDashboard = () => {
+            const dashboardCoursesContainer = document.getElementById('dashboard-courses');
+            const recommendedContainer = document.querySelector('#dashboard-page .grid');
+            if (!dashboardCoursesContainer || !recommendedContainer) return;
+
+            const myCourses = coursesData.filter(c => c.progress > 0);
+            dashboardCoursesContainer.innerHTML = '';
+            myCourses.forEach(course => {
+                const courseEl = document.createElement('div');
+                courseEl.innerHTML = `
+                    <div class="flex items-center">
+                        <img src="${course.image}" class="w-24 h-16 object-cover rounded-md mr-4" alt="${course.title}">
+                        <div class="flex-grow">
+                            <h4 class="font-semibold">${course.title}</h4>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                                <div class="gradient-bg h-2.5 rounded-full" style="width: ${course.progress}%"></div>
+                            </div>
+                        </div>
+                        <button class="ml-6 btn-primary !py-2 !px-4">Continue</button>
+                    </div>
+                `;
+                dashboardCoursesContainer.appendChild(courseEl);
+            });
+
+            const recommendedCourses = coursesData.filter(c => c.progress === 0).slice(0, 2);
+            recommendedContainer.innerHTML = '';
+            recommendedCourses.forEach(course => {
+                recommendedContainer.appendChild(createCourseCard(course));
+            });
+        }
+
+        // --- FEATURED COURSES CAROUSEL ---
+        const carouselContainer = document.getElementById('featured-courses-carousel');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+
+        const populateCarousel = () => {
+            if (!carouselContainer) return;
+            coursesData.slice(0, 5).forEach(course => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'flex-shrink-0 w-80';
+                cardWrapper.appendChild(createCourseCard(course));
+                carouselContainer.appendChild(cardWrapper);
+            });
+            feather.replace();
+        };
+
+        if (carouselContainer) {
+            nextBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: 344, behavior: 'smooth' }); // 320px card + 24px gap
+            });
+            prevBtn.addEventListener('click', () => {
+                carouselContainer.scrollBy({ left: -344, behavior: 'smooth' });
+            });
+        }
+
+        // --- SCROLL REVEAL ANIMATION ---
+        const revealSections = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealSections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // --- MOBILE MENU ---
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- INITIALIZATION ---
+        const init = () => {
+            feather.replace();
+            showPage('home');
+            populateCourses();
+            populateCarousel();
+            populateDashboard();
+        };
+
+        init();
+    });
+    </script>
+</body>
+</html>
